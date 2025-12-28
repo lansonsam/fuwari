@@ -253,10 +253,12 @@ const bannerOffset =
 (function() {
     function cleanMeting() {
         const metingElements = document.querySelectorAll('meting-js');
-        metingElements.forEach(el => {
-            // 清除已有的 aplayer 实例，只保留一个
+        console.log('[Meting] 找到 meting-js 元素:', metingElements.length);
+        metingElements.forEach((el, index) => {
             const existingPlayers = el.querySelectorAll('.aplayer');
+            console.log(`[Meting] 元素 ${index} 中的 aplayer 数量:`, existingPlayers.length);
             if (existingPlayers.length > 1) {
+                console.log(`[Meting] 清理多余的 aplayer，保留第一个`);
                 for (let i = 1; i < existingPlayers.length; i++) {
                     existingPlayers[i].remove();
                 }
@@ -266,13 +268,18 @@ const bannerOffset =
     
     // Swup 页面切换时清理
     document.addEventListener('swup:contentReplaced', function() {
+        console.log('[Meting] swup 页面切换，准备清理');
         setTimeout(cleanMeting, 200);
     });
     
     // 初始加载后清理
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => setTimeout(cleanMeting, 200));
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[Meting] DOMContentLoaded，准备清理');
+            setTimeout(cleanMeting, 200);
+        });
     } else {
+        console.log('[Meting] 页面已加载，准备清理');
         setTimeout(cleanMeting, 200);
     }
 })();
