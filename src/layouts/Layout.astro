@@ -251,35 +251,59 @@ const bannerOffset =
 // 防止 MetingJS 重复初始化
 (function() {
     function cleanMeting() {
+        console.log('[Meting] 开始清理...');
+        
+        // 方法1: 直接查找页面上所有 aplayer
+        const allPlayers = document.querySelectorAll('.aplayer');
+        console.log('[Meting] 页面上所有 .aplayer 数量:', allPlayers.length);
+        
+        // 只保留第一个，删除其他所有
+        if (allPlayers.length > 1) {
+            console.log('[Meting] 发现多个播放器，开始清理多余的...');
+            for (let i = 1; i < allPlayers.length; i++) {
+                console.log('[Meting] 删除第', i + 1, '个播放器');
+                allPlayers[i].remove();
+            }
+        }
+        
+        // 方法2: 检查 meting-js 内部
         const metingElements = document.querySelectorAll('meting-js');
-        console.log('[Meting] 找到 meting-js 元素:', metingElements.length);
         metingElements.forEach((el, index) => {
-            const existingPlayers = el.querySelectorAll('.aplayer');
-            console.log(`[Meting] 元素 ${index} 中的 aplayer 数量:`, existingPlayers.length);
-            if (existingPlayers.length > 1) {
-                console.log(`[Meting] 清理多余的 aplayer，保留第一个`);
-                for (let i = 1; i < existingPlayers.length; i++) {
-                    existingPlayers[i].remove();
+            const players = el.querySelectorAll('.aplayer');
+            console.log(`[Meting] meting-js[${index}] 内的 aplayer 数量:`, players.length);
+            if (players.length > 1) {
+                for (let i = 1; i < players.length; i++) {
+                    players[i].remove();
                 }
             }
         });
+        
+        console.log('[Meting] 清理完成，剩余 aplayer 数量:', document.querySelectorAll('.aplayer').length);
+    }
+    
+    // 多次清理，确保捕获延迟加载的情况
+    function scheduleClean() {
+        setTimeout(cleanMeting, 100);
+        setTimeout(cleanMeting, 500);
+        setTimeout(cleanMeting, 1000);
+        setTimeout(cleanMeting, 2000);
     }
     
     // Swup 页面切换时清理
     document.addEventListener('swup:contentReplaced', function() {
-        console.log('[Meting] swup 页面切换，准备清理');
-        setTimeout(cleanMeting, 200);
+        console.log('[Meting] swup 页面切换');
+        scheduleClean();
     });
     
-    // 初始加载后清理
+    // 初始加载
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('[Meting] DOMContentLoaded，准备清理');
-            setTimeout(cleanMeting, 200);
+            console.log('[Meting] DOMContentLoaded');
+            scheduleClean();
         });
     } else {
-        console.log('[Meting] 页面已加载，准备清理');
-        setTimeout(cleanMeting, 200);
+        console.log('[Meting] 页面已加载');
+        scheduleClean();
     }
 })();
 </script>
