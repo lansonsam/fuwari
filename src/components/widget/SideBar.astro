@@ -1,0 +1,103 @@
+---
+import type { MarkdownHeading } from "astro";
+
+import Profile from "./Profile.astro";
+
+interface Props {
+	class?: string;
+	headings?: MarkdownHeading[];
+}
+
+const className = Astro.props.class;
+---
+<div id="sidebar" class:list={[className, "w-full"]}>
+    <div class="flex flex-col w-full gap-4 mb-4">
+        <Profile></Profile>
+    </div>
+    <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
+
+        <!-- 网易云音乐播放器 -->
+        <div class="music-player card-base p-3 w-full max-w-[280px] mx-auto">
+            <meting-js
+                server="netease"
+                type="playlist"
+                id="8926731849"
+                mini="false"
+                fixed="false"
+                list-folded="true"
+                autoplay="false"
+                volume="0.5"
+                theme="#f472b6"
+                order="random"
+                preload="auto"
+                list-max-height="200px"
+                api="https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r">
+            </meting-js>
+        </div>
+
+        <!-- GitHub 项目卡片 -->
+        <div class="overflow-hidden flex justify-center">
+            <a href="https://github.com/afoim/fuwari" target="_blank" rel="noopener noreferrer" class="github-card card-base p-4 w-full max-w-[280px] hover:shadow-lg transition-all duration-300">
+                <div class="flex items-center gap-2 mb-2">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <span class="font-semibold text-sm">Fork from</span>
+                </div>
+                <div class="text-base font-bold mb-1">afoim/fuwari</div>
+                <p class="text-xs opacity-70 leading-relaxed">本站基于此项目修改而来</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.github-card {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--card-bg);
+}
+.github-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+:global(.dark) .github-card {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+:global(.dark) .github-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.music-player {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+:global(.dark) .music-player {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+.music-player :global(.aplayer) {
+    background: transparent !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}
+.music-player :global(.aplayer-body) {
+    background: transparent !important;
+}
+.music-player :global(.aplayer-info) {
+    background: transparent !important;
+    border-bottom: none !important;
+}
+.music-player :global(.aplayer-list) {
+    background: transparent !important;
+}
+.music-player :global(.aplayer-list ol li) {
+    border-top-color: rgba(0, 0, 0, 0.1) !important;
+}
+:global(.dark) .music-player :global(.aplayer-list ol li) {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+</style>
+
+
+
