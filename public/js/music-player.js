@@ -140,10 +140,12 @@ function initMusicPlayer() {
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     overflow: visible; /* 允许音波超出容器 */
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.8); /* 默认值，会被 JavaScript 动态更新 */
+    background: rgba(30, 30, 30, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .music-player-container.expanded {
@@ -351,7 +353,7 @@ function initMusicPlayer() {
   }
 
   .music-title {
-    color: #333;
+    color: #fff;
     font-size: 14px;
     font-weight: 600;
     overflow: hidden;
@@ -360,14 +362,14 @@ function initMusicPlayer() {
   }
 
   .music-artist {
-    color: #999;           /* 更淡的颜色 */
-    font-size: 11px;       /* 更小的字体 */
-    font-weight: 400;      /* 正常字重 */
-    opacity: 0.8;          /* 降低不透明度 */
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.8;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: 2px;       /* 与标题稍微拉开距离 */
+    margin-top: 2px;
   }
 
   /* ==================== 进度条 ==================== */
@@ -388,7 +390,7 @@ function initMusicPlayer() {
   .music-progress-bar {
     width: 100%;
     height: 4px;
-    background: var(--progress-bg, rgba(0, 0, 0, 0.1));
+    background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
     cursor: pointer;
     position: relative;
@@ -397,7 +399,7 @@ function initMusicPlayer() {
 
   .music-progress-fill {
     height: 100%;
-    background: var(--progress-fill, rgba(36, 44, 54, 0.8));
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 2px;
     width: 0%;
     transition: width 0.1s linear;
@@ -407,30 +409,31 @@ function initMusicPlayer() {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
-    color: #666;
+    color: rgba(255,255,255,0.6);
     padding: 0 2px;
   }
 
   /* ==================== 控制按钮 ==================== */
   .music-controls {
-    display: flex;
+    display: flex !important;
     align-items: center;
     gap: 8px;
     justify-content: center;
     overflow: visible;
     align-self: stretch;
+    margin-top: 8px;
   }
 
   .music-btn {
-    background: none;
+    background: transparent;
     border: none;
-    color: #333;
+    color: inherit;
     cursor: pointer;
     padding: 0;
     font-size: 16px;
-    opacity: 0.7;
+    opacity: 0.8;
     transition: all 0.3s;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     width: 32px;
@@ -439,10 +442,15 @@ function initMusicPlayer() {
     flex-shrink: 0;
   }
 
+  .music-btn i, .music-btn svg {
+    color: inherit;
+    fill: currentColor;
+  }
+
   .music-btn:hover {
     opacity: 1;
     transform: scale(1.1);
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(128, 128, 128, 0.15);
   }
 
   /* GitHub链接图标 */
@@ -729,7 +737,7 @@ function initMusicPlayer() {
   const ballOverlay = document.createElement("div");
   ballOverlay.className = "music-ball-overlay";
   const ballIconSize = window.MusicPlayerBallIconSize || 18;
-  ballOverlay.innerHTML = `<i class="iconfont icon-play" style="font-size: ${ballIconSize}px;"></i>`;
+  ballOverlay.innerHTML = `<svg width="${ballIconSize}" height="${ballIconSize}" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
 
   ballRotating.appendChild(ballImage);
   ballAlbum.append(ballRotating, ballOverlay);
@@ -753,7 +761,7 @@ function initMusicPlayer() {
 
   const expandedOverlay = document.createElement("div");
   expandedOverlay.className = "music-expanded-overlay";
-  expandedOverlay.innerHTML = '<i class="iconfont icon-play" style="font-size: 24px;"></i>';
+  expandedOverlay.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
 
   expandedRotating.append(expandedBase, expandedImage);
   expandedAlbum.append(expandedRotating, expandedOverlay);
@@ -793,17 +801,17 @@ function initMusicPlayer() {
 
   const prevBtn = document.createElement("button");
   prevBtn.className = "music-btn";
-  prevBtn.innerHTML = '<i class="iconfont icon-backward"></i>';
+  prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>';
   prevBtn.title = "上一曲";
 
   const playBtn = document.createElement("button");
   playBtn.className = "music-btn play-btn";
-  playBtn.innerHTML = '<i class="iconfont icon-play"></i>';
+  playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   playBtn.title = "播放/暂停";
 
   const nextBtn = document.createElement("button");
   nextBtn.className = "music-btn";
-  nextBtn.innerHTML = '<i class="iconfont icon-forward"></i>';
+  nextBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>';
   nextBtn.title = "下一曲";
 
   const listBtnWrapper = document.createElement("div");
@@ -811,7 +819,7 @@ function initMusicPlayer() {
 
   const listBtn = document.createElement("button");
   listBtn.className = "music-btn";
-  listBtn.innerHTML = '<i class="iconfont icon-list-ul"></i>';
+  listBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>';
   listBtn.title = "播放列表";
 
   listBtnWrapper.appendChild(listBtn);
@@ -821,7 +829,7 @@ function initMusicPlayer() {
   
   const volumeBtn = document.createElement("button");
   volumeBtn.className = "music-btn";
-  volumeBtn.innerHTML = '<i class="iconfont icon-volume"></i>';
+  volumeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
   volumeBtn.title = "音量";
 
   const volumeSlider = document.createElement("div");
@@ -858,7 +866,7 @@ function initMusicPlayer() {
   playlistHeader.className = "music-playlist-header";
   playlistHeader.innerHTML = `
     <span>播放列表</span>
-    <i class="iconfont icon-close music-playlist-close"></i>
+    <svg class="music-playlist-close" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="cursor:pointer;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
   `;
   
   const playlistInner = document.createElement("div");
@@ -1019,18 +1027,18 @@ function initMusicPlayer() {
     isPlaying = playing;
     if (playing) {
       container.classList.add("playing");
-      playBtn.innerHTML = '<i class="iconfont icon-pause"></i>';
-      ballOverlay.innerHTML = '<i class="iconfont icon-pause" style="font-size: 24px;"></i>';
-      expandedOverlay.innerHTML = '<i class="iconfont icon-pause" style="font-size: 24px;"></i>';
+      playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+      ballOverlay.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+      expandedOverlay.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
       
       if (isExpanded && animationFrameId === null) {
         rotateAlbum();
       }
     } else {
       container.classList.remove("playing");
-      playBtn.innerHTML = '<i class="iconfont icon-play"></i>';
-      ballOverlay.innerHTML = '<i class="iconfont icon-play" style="font-size: 24px;"></i>';
-      expandedOverlay.innerHTML = '<i class="iconfont icon-play" style="font-size: 24px;"></i>';
+      playBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      ballOverlay.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      expandedOverlay.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
       
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
@@ -1204,9 +1212,9 @@ function initMusicPlayer() {
   // 7.10 更新音量图标
   function updateVolumeIcon() {
     if (audio.volume === 0) {
-      volumeBtn.innerHTML = '<i class="iconfont icon-mute"></i>';
+      volumeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>';
     } else {
-      volumeBtn.innerHTML = '<i class="iconfont icon-volume"></i>';
+      volumeBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
     }
   }
 
@@ -1227,14 +1235,14 @@ function initMusicPlayer() {
       ? `rgba(30, 30, 30, ${opacity})`
       : `rgba(255, 255, 255, ${opacity})`;
     const textColor = isDark ? "#fff" : "#333";
-    const buttonColor = isDark ? "#fff" : "#242c36";
+    const buttonColor = isDark ? "#fff" : "#333";
 
     container.style.backgroundColor = bgColor;
     
     const titleEl = trackInfo.querySelector(".music-title");
     const artistEl = trackInfo.querySelector(".music-artist");
     if (titleEl) titleEl.style.color = textColor;
-    if (artistEl) artistEl.style.color = textColor;
+    if (artistEl) artistEl.style.color = isDark ? "rgba(255,255,255,0.7)" : "#666";
     
     [prevBtn, playBtn, nextBtn, listBtn, volumeBtn].forEach(
       (btn) => btn && (btn.style.color = buttonColor)
@@ -1245,8 +1253,8 @@ function initMusicPlayer() {
     }
 
     const sliderBg = isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)";
-    const sliderFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(36, 44, 54, 0.8)";
-    const sliderThumb = isDark ? "#fff" : "#242c36";
+    const sliderFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.6)";
+    const sliderThumb = isDark ? "#fff" : "#333";
     container.style.setProperty('--slider-bg', sliderBg);
     container.style.setProperty('--slider-fill', sliderFill);
     container.style.setProperty('--slider-thumb', sliderThumb);
@@ -1267,7 +1275,7 @@ function initMusicPlayer() {
     container.style.setProperty('--wave-initial-scale', initialScale);
 
     const progressBg = isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.1)";
-    const progressFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(36, 44, 54, 0.8)";
+    const progressFill = isDark ? "rgba(255, 255, 255, 0.8)" : "rgba(0, 0, 0, 0.6)";
     container.style.setProperty('--progress-bg', progressBg);
     container.style.setProperty('--progress-fill', progressFill);
 
