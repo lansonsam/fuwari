@@ -248,62 +248,66 @@ const bannerOffset =
 <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js" data-swup-ignore-script></script>
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" data-swup-ignore-script></script>
 <script data-swup-ignore-script>
-// 防止 MetingJS 重复初始化
+// 防止 MetingJS 重复初始化 - 使用 MutationObserver 实时监听
 (function() {
-    function cleanMeting() {
-        console.log('[Meting] 开始清理...');
-        
-        // 方法1: 直接查找页面上所有 aplayer
+    let firstPlayer = null;
+    
+    function cleanExtraPlayers() {
         const allPlayers = document.querySelectorAll('.aplayer');
-        console.log('[Meting] 页面上所有 .aplayer 数量:', allPlayers.length);
-        
-        // 只保留第一个，删除其他所有
         if (allPlayers.length > 1) {
-            console.log('[Meting] 发现多个播放器，开始清理多余的...');
+            console.log('[Meting] 检测到多个播放器，清理中...');
             for (let i = 1; i < allPlayers.length; i++) {
-                console.log('[Meting] 删除第', i + 1, '个播放器');
                 allPlayers[i].remove();
             }
         }
-        
-        // 方法2: 检查 meting-js 内部
-        const metingElements = document.querySelectorAll('meting-js');
-        metingElements.forEach((el, index) => {
-            const players = el.querySelectorAll('.aplayer');
-            console.log(`[Meting] meting-js[${index}] 内的 aplayer 数量:`, players.length);
-            if (players.length > 1) {
-                for (let i = 1; i < players.length; i++) {
-                    players[i].remove();
+    }
+    
+    // MutationObserver 实时监听 DOM 变化
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1 && node.classList && node.classList.contains('aplayer')) {
+                    // 新增了一个 aplayer
+                    const allPlayers = document.querySelectorAll('.aplayer');
+                    if (allPlayers.length > 1) {
+                        console.log('[Meting] MutationObserver: 检测到新增播放器，立即删除');
+                        node.remove();
+                    }
                 }
-            }
+            });
         });
-        
-        console.log('[Meting] 清理完成，剩余 aplayer 数量:', document.querySelectorAll('.aplayer').length);
+    });
+    
+    // 开始监听
+    function startObserver() {
+        const metingEl = document.querySelector('meting-js');
+        if (metingEl) {
+            observer.observe(metingEl, { childList: true, subtree: true });
+            console.log('[Meting] MutationObserver 已启动');
+        }
+        // 同时监听整个 sidebar
+        const sidebar = document.querySelector('#sidebar');
+        if (sidebar) {
+            observer.observe(sidebar, { childList: true, subtree: true });
+        }
     }
     
-    // 多次清理，确保捕获延迟加载的情况
-    function scheduleClean() {
-        setTimeout(cleanMeting, 100);
-        setTimeout(cleanMeting, 500);
-        setTimeout(cleanMeting, 1000);
-        setTimeout(cleanMeting, 2000);
-    }
-    
-    // Swup 页面切换时清理
+    // Swup 页面切换时重新启动
     document.addEventListener('swup:contentReplaced', function() {
         console.log('[Meting] swup 页面切换');
-        scheduleClean();
+        setTimeout(startObserver, 50);
+        setTimeout(cleanExtraPlayers, 100);
     });
     
     // 初始加载
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('[Meting] DOMContentLoaded');
-            scheduleClean();
+            startObserver();
+            setTimeout(cleanExtraPlayers, 500);
         });
     } else {
-        console.log('[Meting] 页面已加载');
-        scheduleClean();
+        startObserver();
+        setTimeout(cleanExtraPlayers, 500);
     }
 })();
 </script>
