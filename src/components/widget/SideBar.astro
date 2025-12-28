@@ -16,6 +16,25 @@ const className = Astro.props.class;
     </div>
     <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
 
+        <!-- 网易云音乐播放器 -->
+        <div class="music-player card-base p-3 w-full max-w-[280px] mx-auto">
+            <meting-js
+                server="netease"
+                type="playlist"
+                id="8926731849"
+                mini="false"
+                fixed="false"
+                list-folded="true"
+                autoplay="false"
+                volume="0.5"
+                theme="#f472b6"
+                order="random"
+                preload="auto"
+                list-max-height="200px"
+                api="https://api.i-meto.com/meting/api?server=:server&type=:type&id=:id&r=:r">
+            </meting-js>
+        </div>
+
         <!-- GitHub 项目卡片 -->
         <div class="overflow-hidden flex justify-center">
             <a href="https://github.com/afoim/fuwari" target="_blank" rel="noopener noreferrer" class="github-card card-base p-4 w-full max-w-[280px] hover:shadow-lg transition-all duration-300">

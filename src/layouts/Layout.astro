@@ -243,9 +243,74 @@ const bannerOffset =
 		<!-- Umami分析 -->
 		<script defer src="https://api.nuiziyyds.com/script.js" data-website-id="5f633fdd-3b13-456c-b8ed-ce6fd3430ef1" data-swup-ignore-script></script>
 
-		<!-- 音乐播放器图标字体 -->
-		<link rel="stylesheet" href="https://at.alicdn.com/t/c/font_4470644_8iq5yfkdu9l.css">
-
+<!-- APlayer + MetingJS 音乐播放器 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js" data-swup-ignore-script></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" data-swup-ignore-script></script>
+<script data-swup-ignore-script>
+// 防止 MetingJS 重复初始化 - 使用 MutationObserver 实时监听
+(function() {
+    let firstPlayer = null;
+    
+    function cleanExtraPlayers() {
+        const allPlayers = document.querySelectorAll('.aplayer');
+        if (allPlayers.length > 1) {
+            console.log('[Meting] 检测到多个播放器，清理中...');
+            for (let i = 1; i < allPlayers.length; i++) {
+                allPlayers[i].remove();
+            }
+        }
+    }
+    
+    // MutationObserver 实时监听 DOM 变化
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1 && node.classList && node.classList.contains('aplayer')) {
+                    // 新增了一个 aplayer
+                    const allPlayers = document.querySelectorAll('.aplayer');
+                    if (allPlayers.length > 1) {
+                        console.log('[Meting] MutationObserver: 检测到新增播放器，立即删除');
+                        node.remove();
+                    }
+                }
+            });
+        });
+    });
+    
+    // 开始监听
+    function startObserver() {
+        const metingEl = document.querySelector('meting-js');
+        if (metingEl) {
+            observer.observe(metingEl, { childList: true, subtree: true });
+            console.log('[Meting] MutationObserver 已启动');
+        }
+        // 同时监听整个 sidebar
+        const sidebar = document.querySelector('#sidebar');
+        if (sidebar) {
+            observer.observe(sidebar, { childList: true, subtree: true });
+        }
+    }
+    
+    // Swup 页面切换时重新启动
+    document.addEventListener('swup:contentReplaced', function() {
+        console.log('[Meting] swup 页面切换');
+        setTimeout(startObserver, 50);
+        setTimeout(cleanExtraPlayers, 100);
+    });
+    
+    // 初始加载
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            startObserver();
+            setTimeout(cleanExtraPlayers, 500);
+        });
+    } else {
+        startObserver();
+        setTimeout(cleanExtraPlayers, 500);
+    }
+})();
+</script>
 	</head>
 	<body class=" min-h-screen transition " class:list={[{"lg:is-home": isHomePage, "enable-banner": enableBanner}]}
 		  data-overlayscrollbars-initialize
@@ -256,19 +321,6 @@ const bannerOffset =
 
 		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
 		<div id="page-height-extend" class="hidden h-[300vh]"></div>
-
-		<!-- 悬浮球音乐播放器 -->
-		<script src="/js/music-player.js" data-swup-ignore-script></script>
-		<script data-swup-ignore-script>
-			// 页面加载完成后初始化音乐播放器
-			if (document.readyState === 'loading') {
-				document.addEventListener('DOMContentLoaded', () => {
-					if (typeof initMusicPlayer === 'function') initMusicPlayer();
-				});
-			} else {
-				if (typeof initMusicPlayer === 'function') initMusicPlayer();
-			}
-		</script>
 
 	</body>
 </html>
