@@ -56,10 +56,6 @@ export const siteConfig: SiteConfig = {
 			//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
 		},
 	],
-	officialSites: [
-		{ url: "https://acofork.com", alias: "EdgeOne CN" },
-		{ url: "https://2x.nz", alias: "Global" },
-	],
 };
 
 export const navBarConfig: NavBarConfig = {
