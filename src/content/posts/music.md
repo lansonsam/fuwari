@@ -35,7 +35,7 @@ pip install winsdk requests
 ```
 
 
-```Python
+```python
 import asyncio
 import winsdk.windows.media.control as media_control
 import requests
