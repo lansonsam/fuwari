@@ -33,3 +33,6 @@ yarn.lock
 
 # 忽略上游仓库
 ori
+
+# Local Netlify folder
+.netlify
