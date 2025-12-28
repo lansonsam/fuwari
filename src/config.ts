@@ -68,8 +68,8 @@ export const navBarConfig: NavBarConfig = {
 			external: true,
 		},
 		{
-			name: "流量监控（新）",
-			url: "https://eoddos.2x.nz",
+			name: "探针",
+			url: "https://status.nuiziyyds.com/",
 			external: true,
 		},
 	],
