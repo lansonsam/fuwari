@@ -48,6 +48,13 @@ const className = Astro.props.class;
                 <p class="text-xs opacity-70 leading-relaxed">本站基于此项目修改而来</p>
             </a>
         </div>
+
+        <!-- Steam 卡片 -->
+        <div class="overflow-hidden flex justify-center">
+            <a href="https://steamcommunity.com/profiles/76561198862773271" target="_blank" rel="noopener noreferrer" class="steam-card card-base w-full max-w-[280px] hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <img src="https://steam-stat.vercel.app/api?profileName=76561198862773271" alt="Steam Profile" class="w-full" loading="lazy" />
+            </a>
+        </div>
     </div>
 </div>
 
@@ -64,6 +71,21 @@ const className = Astro.props.class;
     border-color: rgba(255, 255, 255, 0.1);
 }
 :global(.dark) .github-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.steam-card {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+.steam-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+:global(.dark) .steam-card {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+:global(.dark) .steam-card:hover {
     border-color: rgba(255, 255, 255, 0.2);
 }
 
