@@ -1,5 +1,23 @@
 import { getCollection } from "astro:content";
 
+export async function getCategories(): Promise<{ name: string; count: number }[]> {
+	const posts = await getSortedPosts();
+	const countMap: Record<string, number> = {};
+	for (const post of posts) {
+		const cat = post.data.category;
+		if (cat) {
+			countMap[cat] = (countMap[cat] || 0) + 1;
+		}
+	}
+	return Object.entries(countMap)
+		.map(([name, count]) => ({ name, count }))
+		.sort((a, b) => b.count - a.count);
+}
+
+export async function getPostsByCategory(category: string) {
+	const posts = await getSortedPosts();
+	return posts.filter((p) => p.data.category === category);
+}
 
 export async function getSortedPosts() {
 	const allBlogPosts = await getCollection("posts", ({ data }) => {
