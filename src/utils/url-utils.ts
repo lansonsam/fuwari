@@ -13,6 +13,10 @@ export function getPostUrlBySlug(slug: string): string {
 	return url(`/posts/${slug}/`);
 }
 
+export function getCategoryUrl(category: string): string {
+	return url(`/categories/${encodeURIComponent(category)}/`);
+}
+
 
 
 export function getDir(path: string): string {

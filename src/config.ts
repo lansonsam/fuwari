@@ -62,6 +62,7 @@ export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
 		LinkPreset.Archive,
+		LinkPreset.Category,
 		{
 			name: "统计",
 			url: "https://api.nuiziyyds.com/share/8LG7Wn20Jc28yDA3",

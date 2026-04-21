@@ -1,0 +1,39 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getCategories } from "@utils/content-utils";
+import { getCategoryUrl } from "@utils/url-utils";
+
+const categories = await getCategories();
+---
+
+<MainGridLayout title="分类">
+    <div class="card-base px-8 py-6">
+        <div class="flex items-center gap-2 mb-6">
+            <Icon name="material-symbols:folder-outline" class="text-2xl text-[var(--primary)]"></Icon>
+            <h1 class="text-2xl font-bold text-75">文章分类</h1>
+        </div>
+        {categories.length === 0 ? (
+            <p class="text-50 text-sm">暂无分类</p>
+        ) : (
+            <div class="flex flex-wrap gap-3">
+                {categories.map(cat => (
+                    <a href={getCategoryUrl(cat.name)}
+                       class="group flex items-center gap-2 px-4 py-2 rounded-xl
+                       bg-[var(--btn-plain-bg)] hover:bg-[var(--btn-plain-bg-hover)]
+                       active:bg-[var(--btn-plain-bg-active)] transition">
+                        <Icon name="material-symbols:folder-outline"
+                              class="text-lg text-[var(--primary)]"></Icon>
+                        <span class="font-medium text-75 group-hover:text-[var(--primary)] transition">
+                            {cat.name}
+                        </span>
+                        <span class="text-xs text-50 bg-[var(--primary)] text-white
+                              rounded-full px-2 py-0.5 font-medium">
+                            {cat.count}
+                        </span>
+                    </a>
+                ))}
+            </div>
+        )}
+    </div>
+</MainGridLayout>

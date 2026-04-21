@@ -3,7 +3,7 @@ import path from "node:path";
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 
-import { getDir } from "../utils/url-utils";
+import { getDir, getCategoryUrl } from "../utils/url-utils";
 import PostMetadata from "./PostMeta.astro";
 import ImageWrapper from "./misc/ImageWrapper.astro";
 import { umamiConfig } from "../config";
@@ -53,6 +53,17 @@ const { remarkPluginFrontmatter } = await entry.render();
             {title}
             <Icon class="text-[var(--primary)] text-[2rem] transition inline absolute translate-y-0.5 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0" name="material-symbols:chevron-right-rounded"></Icon>
         </a>
+
+        <!-- category badge -->
+        {entry.data.category && (
+            <a href={getCategoryUrl(entry.data.category)}
+               class="inline-flex items-center gap-1 mb-2 px-2 py-0.5 rounded-md text-xs font-medium
+               bg-[var(--primary)] text-white hover:opacity-80 transition w-fit"
+               onclick="event.stopPropagation()">
+                <Icon name="material-symbols:folder-outline" class="text-sm"></Icon>
+                {entry.data.category}
+            </a>
+        )}
 
         <!-- metadata -->
         <PostMetadata published={published} updated={updated} hideUpdateDate={true} slug={entry.slug} class="mb-2 md:mb-4"></PostMetadata>

@@ -1,7 +1,7 @@
 ---
 
 import { getSortedPosts } from "../utils/content-utils";
-import { getPostUrlBySlug } from "../utils/url-utils";
+import { getPostUrlBySlug, getCategoryUrl } from "../utils/url-utils";
 
 interface Props {
 	keyword?: string;
@@ -79,11 +79,18 @@ function formatDate(date: Date) {
                             >
                                     {post.data.title}
                             </div>
-                            <!-- tag list -->
+                            <!-- category -->
                             <div class="hidden md:block md:w-[15%] text-left text-sm transition
                             whitespace-nowrap overflow-ellipsis overflow-hidden
-                            text-30"
-                            ></div>
+                            text-30">
+                                {post.data.category && (
+                                    <a href={getCategoryUrl(post.data.category)}
+                                       class="hover:text-[var(--primary)] transition"
+                                       onclick="event.stopPropagation()">
+                                        {post.data.category}
+                                    </a>
+                                )}
+                            </div>
                         </div>
                     </a>
                 ))}
